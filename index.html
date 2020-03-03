@@ -1,0 +1,260 @@
+<h1>Brightness</h1>
+
+<div class="circle"id="cloud"></div>
+<div id="sun">
+    <div class="sunrays">
+      <div class="ray ray1"></div>
+      <div class="ray ray2"></div>
+      <div class="ray ray3"></div>
+      <div class="ray ray4"></div>
+      <div class="ray ray5"></div>
+      <div class="ray ray6"></div>
+      <div class="ray ray7"></div>
+      <div class="ray ray8"></div>
+    </div>
+
+    <style>
+    <style>
+     body {
+  margin: 0;
+  height: 100vh;
+  background: white;
+  overflow: hidden;
+  font-size: 20px;
+  font-family: Inconsolata,sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+h1 {
+  padding: 0.5em;
+  margin: 0 auto;
+  color: white;
+  text-align: center;
+  color: #f4ae11;
+  font-weight: 100;
+  font-size: 2em;
+  text-transform: uppercase;
+}
+
+.circle {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  margin: -75px;
+  background: red;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+}
+
+#cloud {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 3.6875em;
+  height: 3.6875em;
+  margin: -1.84375em;
+  background: black;
+  border-radius: 50%;
+  box-shadow:
+    -6em 1em 0 4em,
+    6em 1em 0 4em,
+    0 0 0 5em black,
+    -2.1875em 0.6875em 0 -0.3125em black,
+    2.0625em 0.9375em 0 -0.5625em black;
+}
+
+#sun {
+  height: 200px;
+  width: 200px;
+  background-color: #f4ae11;
+  border-radius: 50%;
+  display: inline-block;
+  position:absolute;
+  top:370px;
+  left:750px;
+  border:5px solid .beam {
+  width:5px;
+  height:30px;
+  background:#f4ae11;
+  position:absolute;
+  
+}
+
+.beam1 {
+  transform: rotate(0deg);
+  top:-20px;
+  left:120px;
+}
+.beam2 {
+  transform: rotate(45deg);
+  top:20px;
+  left:220px;
+}
+.beam3 {
+  transform: rotate(90deg);
+  top:110px;
+  left:250px;
+}
+.beam4 {
+  transform: rotate(135deg);
+  top:200px;
+  left:220px;
+}
+.beam5 {
+  transform: rotate(180deg);
+  top:240px;
+  left:120px;
+}
+.beam6 {
+  transform: rotate(225deg);
+  top:200px;
+  left:20px;
+}
+.beam7 {
+  transform: rotate(270deg);
+  top:110px;
+  left:-10px;
+}
+.beam8 {
+  transform: rotate(315deg);
+  top:20px;
+  left:20px;
+}
+.sunbeams {
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    top: -25px;
+    left: -25px;
+    animation: spin 28s linear 0s infinite;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+};
+}
+.ray {
+  width:5px;
+  height:30px;
+  background:#f4ae11;
+  position:absolute;
+}
+
+.ray1 {
+  transform: rotate(0deg);
+  top:-20px;
+  left:120px;
+}
+.ray2 {
+  transform: rotate(45deg);
+  top:20px;
+  left:220px;
+}
+.ray3 {
+  transform: rotate(90deg);
+  top:110px;
+  left:250px;
+}
+.ray4 {
+  transform: rotate(135deg);
+  top:200px;
+  left:220px;
+}
+.ray5 {
+  transform: rotate(180deg);
+  top:240px;
+  left:120px;
+}
+.ray6 {
+  transform: rotate(225deg);
+  top:200px;
+  left:20px;
+}
+.ray7 {
+  transform: rotate(270deg);
+  top:110px;
+  left:-10px;
+}
+.ray8 {
+  transform: rotate(315deg);
+  top:20px;
+  left:20px;
+}
+.sunrays {
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    top: -25px;
+    left: -25px;
+    animation: spin 20s linear 0s infinite;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+</style>
+
+<script>
+  var moon=document.getElementById("cloud"),
+    dragging=false,
+    radius=120,
+    area=Math.PI*radius*radius,
+    offs=[0,0];
+
+function init(){
+  moon.addEventListener("mousedown",selectMoon);
+  moon.addEventListener("touchstart",selectMoon);
+  document.body.addEventListener("mousemove",moveMoon);
+  document.body.addEventListener("touchmove",moveMoon);
+  document.body.addEventListener("mouseup",dropMoon);
+  document.body.addEventListener("touchend",dropMoon);
+  setMoonData(window.innerWidth/2+radius*2.5,window.innerHeight/2);
+}
+
+function selectMoon(evt){
+  dragging=true;
+  var coords=getCoords(evt),
+      bcr=moon.getBoundingClientRect();
+  offs=[coords[0]-bcr.left-radius,coords[1]-bcr.top-radius];
+}
+
+function moveMoon(evt){
+  if (!dragging)
+    return;
+  var coords=getCoords(evt);
+  setMoonData(coords[0]-offs[0],coords[1]-offs[1]);
+}
+
+function setMoonData(x,y){
+  moon.style.left=x/window.innerWidth*100+"%";
+  moon.style.top=y/window.innerHeight*100+"%";
+  
+  var offset=Math.hypot(x-window.innerWidth/2,y-window.innerHeight/2),
+      sector=Math.acos((offset/2)/radius)/Math.PI,
+      triangle=Math.sqrt(radius*radius-offset*offset/4)*(offset/2),
+      overlap=(area*sector-triangle)*2/area || 0,
+      opacity=Math.max(400-offset,0)/1000,
+      expOverlap=Math.pow(overlap,4);
+
+  document.body.style.background="hsl("+(180+Math.floor(90*expOverlap))+", 40%, "+(1-expOverlap)*45+"%)";
+
+}
+
+function dropMoon(){
+  dragging=false;
+}
+
+function getCoords(evt){
+  return [(evt.touches || [evt])[0].clientX,(evt.touches || [evt])[0].clientY];
+}
+
+Math.hypot=function(a,b){
+  return Math.sqrt(a*a+b*b);
+};
+
+init();
+  </script>
